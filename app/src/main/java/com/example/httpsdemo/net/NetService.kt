@@ -30,6 +30,9 @@ object NetService {
                 type,
                 AppApplication.instance
             ).build()
+//            okHttpClient = createOkHttpClientBuilderByPublicKey(
+//                okHttpClientBuilder,
+//            ).build()
         }
         return okHttpClient
     }
@@ -66,16 +69,21 @@ object NetService {
         }
     }
 
-    //仅示例，未测试
+    /**
+     * caPublicKey随便写，报错的时候异常里有正确的值，然后拷贝过来将caPublicKey替换成正确的值即可
+     */
     private fun createOkHttpClientBuilderByPublicKey(
         okHttpClientBuilder: OkHttpClient.Builder
     ): OkHttpClient.Builder {
         val caDomain = "www.baidu.com"
-        val caPublicKey = "sha256//558pd1Y5Vercv1ZoSqOrJWDsh9sTMEolM6T8csLucQ="
+        val caPublicKey = "sha256//Zym5rS1SySuo+9dunLEq90wqQ+PnoI9HWGwyZFK/BM="
         val pinner: CertificatePinner = CertificatePinner.Builder()
             .add(caDomain, caPublicKey)
             .build()
-        return okHttpClientBuilder.certificatePinner(pinner)
+        //android 6 或者之前的设备用代理时，调用baidu链接会报异常，因为charles的公钥和baidu公钥不匹配，
+        //但是 6 或者之前的设备用代理时调用wanandroid不会报异常，因为wanandroid没有绑定公钥，并且 6 或者之前的版本默认信任用户证书，也就是charles证书
+        //在 7 或者之后的设备用代理时都会报异常
+        return okHttpClientBuilder.certificatePinner(pinner)//.proxy(proxy)
     }
 
     enum class TYPE {

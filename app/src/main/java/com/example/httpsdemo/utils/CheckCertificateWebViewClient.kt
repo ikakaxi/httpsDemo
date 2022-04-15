@@ -27,6 +27,7 @@ class CheckCertificateWebViewClient(private val certificates: IntArray) : WebVie
                     DialogUtil.showAlertDialog(view.context, "警告", "证书校验失败：没有任何匹配的证书", "关闭页面") {
                         (view.context as Activity).finish()
                     }
+                    //handler.cancel 就是让加载的页面白屏，所有导致了如果webView校验证书存在异常，android在默认情况下会显示白屏
                     handler.cancel()
                 }
                 else -> {
