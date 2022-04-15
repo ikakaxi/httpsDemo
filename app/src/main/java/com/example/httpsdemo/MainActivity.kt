@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.httpsdemo.net.NetService
-import com.example.httpsdemo.net.OkHttpClientBuilderFactory
 import com.example.httpsdemo.utils.DefaultThreadPool
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -32,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.buttonWanandroid).setOnClickListener {
             DefaultThreadPool.execute {
-                requestNet("https://www.wanandroid.com")
+                requestNet("https://www.wanandroid.com/article/list/0/json")
             }
         }
         findViewById<Button>(R.id.buttonWebView).setOnClickListener {
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         }
         //创建OkHttpClient对象
         okHttpClient =
-            NetService.getCertificateOkHttpClient(OkHttpClientBuilderFactory.TYPE.TYPE_ONLY)
+            NetService.getCertificateOkHttpClient(NetService.TYPE.TYPE_DEFAULT)
     }
 
     override fun onDestroy() {
